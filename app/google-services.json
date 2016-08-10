@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1034502199716",
+    "firebase_url": "https://auth-69495.firebaseio.com",
+    "project_id": "auth-69495",
+    "storage_bucket": "auth-69495.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034502199716:android:a8f235c2b645e914",
+        "android_client_info": {
+          "package_name": "com.example.jnetbackup.swipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034502199716-v9u7q2prj8sgl6f982jjnkmo6embop0g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQvlYN6EmbrynfWeFbQv9J0GlijoKm6jI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

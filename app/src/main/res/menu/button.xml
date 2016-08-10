@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_cart"
+        android:icon="@drawable/data"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        />
+    <item android:id="@+id/action_settings"
+        android:icon="@mipmap/ic_launcher"
+        android:title="@string/action_settings"
+        app:showAsAction="never"/>
+</menu>
