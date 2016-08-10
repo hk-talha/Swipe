@@ -19,22 +19,31 @@ import java.util.List;
 
 import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+import de.codecrafters.tableview.toolkit.TableDataRowBackgroundProviders;
 
 public class Table extends AppCompatActivity {
     private static final String[][] DATA_TO_SHOW = { { "This", "is", "a", "test" },
             { "and", "a", "second", "test" } };
-    ArrayList<String>  items;
+    ArrayList<String[]>  items;
+    SimpleTableDataAdapter adapter;
     FeedReaderDbHelper mDbHelper ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table);
-        items=new ArrayList<String>();
+        mDbHelper= new FeedReaderDbHelper(this);
+        items=new ArrayList<String[]>();
         TableView<String[]> tableView = (TableView<String[]>) findViewById(R.id.tableView);
-        SimpleTableDataAdapter st=new SimpleTableDataAdapter(this, DATA_TO_SHOW);
-       SimpleTableDataAdapter adapter= new SimpleTableDataAdapter(this, (List<String[]>) items);
+        int colorEvenRows = android.R.color.white;
+        tableView.setColumnWeight(3,2);
+        int colorOddRows = android.R.color.darker_gray;
+        tableView.setDataRowBackgroundProvider(TableDataRowBackgroundProviders.alternatingRowColors(colorEvenRows, colorOddRows));
+        tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(this,new String[]{ "Temperature","Smoke","Humidity","Time"}));
+    //    SimpleTableDataAdapter st=new SimpleTableDataAdapter(this, DATA_TO_SHOW);
+        adapter= new SimpleTableDataAdapter(this,  items);
         tableView.setDataAdapter(adapter);
-
+Select();
 
     }
     void insert(String Temp,String Smoke,String Humidity,String time)
@@ -59,10 +68,9 @@ public class Table extends AppCompatActivity {
     }
     void insertrow(int i,String temp,String Smoke,String Humidity,String time)
     {
-       items.add(temp);
-        items.add(Smoke);
-        items.add(Humidity);
-        items.add(time);
+        Log.d("Val",temp);
+       items.add(new String[]{temp,Smoke,Humidity,time});
+        adapter.notifyDataSetChanged();
 
     }
     void Select() {

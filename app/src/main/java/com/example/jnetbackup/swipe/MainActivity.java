@@ -109,7 +109,7 @@ actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
         switch (item.getItemId())
         {
             case R.id.action_cart:
-                startActivity(new Intent(getBaseContext(),Sql.class));
+                startActivity(new Intent(getBaseContext(),Table.class));
                 Toast.makeText(getApplicationContext(),"selected",Toast.LENGTH_LONG).show();
 
         }
