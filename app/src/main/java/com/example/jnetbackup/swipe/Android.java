@@ -80,7 +80,7 @@ public static String ip1;
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View androi = inflater.inflate(R.layout.design, container, false);
+        View androi = inflater.inflate(R.layout.asd, container, false);
 
         final Spinner spinner = (Spinner) androi.findViewById(R.id.spinner);
         final Spinner spinner1 = (Spinner) androi.findViewById(R.id.spinner2);
