@@ -2,13 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@color/colorPrimary"
+    >
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:hint="Enter Username" />
+        android:hint="Enter Username"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -16,22 +20,26 @@
         android:ems="10"
         android:id="@+id/editText2"
         android:inputType="textPassword"
-        android:hint="Enter Password" />
+        android:hint="Enter Password"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"/>/>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Password"
+        android:textColor="@color/colorWhite"
         android:id="@+id/checkBox"
         android:checked="false" />
     <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Login"
-        android:background="@drawable/mybutton"
+
         android:id="@+id/button2"
-        android:textColor="#ffffffff"
-        android:layout_gravity="center_horizontal" />
+        android:textColor="#ffffff"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/dark_primary_color"/>
 
 
 
