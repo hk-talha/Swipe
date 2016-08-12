@@ -3,6 +3,7 @@ package com.example.jnetbackup.swipe;
 /**
  * Created by jnetbackup on 6/14/2016.
  */
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,11 +21,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -41,7 +45,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.security.NoSuchAlgorithmException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.StringTokenizer;
 
 @SuppressLint("ValidFragment")
 public class Android extends Fragment {
@@ -59,6 +68,7 @@ public static String ip1;
     ArrayAdapter<String> Device_adapter;
     ArrayList<String> Device_id;
     Context context;
+    DonutProgress progress,progress1,progress2;
     public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c) {
         ip1=ip;
         this.name=name;
@@ -80,10 +90,13 @@ public static String ip1;
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View androi = inflater.inflate(R.layout.asd, container, false);
+        View androi = inflater.inflate(R.layout.design_final, container, false);
 
         final Spinner spinner = (Spinner) androi.findViewById(R.id.spinner);
         final Spinner spinner1 = (Spinner) androi.findViewById(R.id.spinner2);
+        progress= (DonutProgress) androi.findViewById(R.id.donut_progress);
+        progress1= (DonutProgress) androi.findViewById(R.id.donut_progress1);
+        progress2= (DonutProgress) androi.findViewById(R.id.donut_progress2);
         final String[] ip =new String[]{"119.157.128.3:2000","119.157.128.3:2000","119.157.128.3:2030"};
         final ArrayList<String> list = new ArrayList();
         list.add("Choose data centre");
@@ -109,13 +122,15 @@ public static String ip1;
         // Create an ArrayAdapter using the string array and a default spinner layout
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_item     ,Branch_name);
+                R.layout.spinner     ,Branch_name);
         Device_adapter = new ArrayAdapter<String>(this.getActivity(),
-                android.R.layout.simple_spinner_item     ,Device_id);
+                R.layout.spinner    ,Device_id);
+        Device_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner1.setAdapter(Device_adapter);
 // Specify the layout to use when the list of choices appears
         //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
        spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -150,12 +165,12 @@ if(list.get(position)=="Choose data centre")
         Typeface myTypeface = Typeface.createFromAsset(getContext().getAssets(),
                 "digital.ttf");
         this.b = (Button) androi.findViewById(R.id.button);
-        tv = (TextView) androi.findViewById(R.id.textView);
-        tv.setTypeface(myTypeface);
-        tv1 = (TextView) androi.findViewById(R.id.textView2);
-        tv1.setTypeface(myTypeface);
-        tv2 = (TextView) androi.findViewById(R.id.textView3);
-        tv2.setTypeface(myTypeface);
+       // tv = (TextView) androi.findViewById(R.id.textView);
+       // tv.setTypeface(myTypeface);
+      ///  tv1 = (TextView) androi.findViewById(R.id.textView2);
+       // tv1.setTypeface(myTypeface);
+        //tv2 = (TextView) androi.findViewById(R.id.textView3);
+       // tv2.setTypeface(myTypeface);
         this.b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -330,6 +345,7 @@ if(list.get(position)=="Choose data centre")
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_HUMIDITY, Smoke);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SOMKE, Humidity);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TIME, time);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME,getDateTime());
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -433,8 +449,48 @@ if(list.get(position)=="Choose data centre")
            // s.getPropertyCount();
             //SoapObject a= (SoapObject) s.getProperty(0);
             //Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
-            try {
-                tv.setText(Values.get(0) + "C");
+            try{
+            progress.refreshDrawableState();
+            progress.setProgress(0);
+            progress.setMax(1000);
+            Log.d("Text ",progress.getPrefixText());
+            Log.d("Text ",progress.getSuffixText());
+            progress.setSuffixText("ppm");
+
+            ObjectAnimator animation = ObjectAnimator.ofInt(progress, "progress", Integer.parseInt(getint(Values.get(2))));
+
+            animation.setDuration(500); // 0.5 second
+            animation.setInterpolator(new DecelerateInterpolator());
+            animation.start();
+                progress1.refreshDrawableState();
+                progress1.setProgress(0);
+                progress1.setMax(100);
+                Log.d("Text ",progress.getPrefixText());
+                Log.d("Text ",progress.getSuffixText());
+                progress1.setSuffixText("%");
+
+                ObjectAnimator animation1 = ObjectAnimator.ofInt(progress1, "progress", Integer.parseInt(getint(Values.get(1))));
+
+                animation1.setDuration(500); // 0.5 second
+                animation1.setInterpolator(new DecelerateInterpolator());
+                animation1.start();
+                progress2.refreshDrawableState();
+                progress2.setProgress(0);
+                progress2.setMax(100);
+
+
+
+                Log.d("Text ",progress.getPrefixText());
+                Log.d("Text ",progress.getSuffixText());
+                progress2.setSuffixText("C");
+
+                ObjectAnimator animation2 = ObjectAnimator.ofInt(progress2, "progress", Integer.parseInt(getint(Values.get(0))));
+
+                animation2.setDuration(500); // 0.5 second
+                animation2.setInterpolator(new DecelerateInterpolator());
+                animation2.start();
+
+              /*  tv.setText(Values.get(0) + "C");
                 if (Double.parseDouble(Values.get(0)) > 30)
                     tv.setTextColor(Color.parseColor("#ff0000"));
                 else if (Double.parseDouble(Values.get(0)) < 30)
@@ -448,13 +504,21 @@ if(list.get(position)=="Choose data centre")
                 if (Double.parseDouble(Values.get(2)) > 1000)
                     tv2.setTextColor(Color.parseColor("#ff0000"));
                 else if (Double.parseDouble(Values.get(2)) < 1000)
-                    tv2.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv2.setTextColor(Color.parseColor("#FFFFFF"));*/
             } catch (Exception e) {
                 e.printStackTrace();
             }
             Sql sql = new Sql();
             insert(Values.get(0),Values.get(1),Values.get(2),Time);
             Values= new ArrayList<String>(); }
+    }
+
+    private String getint(String s) {
+        StringTokenizer tokens = new StringTokenizer(s, ".");
+        String first = tokens.nextToken();// this will contain "Fruit"
+        String second = tokens.nextToken();
+        Log.d("first",first);
+        return first;
     }
 
     private void parseobject(SoapObject s) {
@@ -466,4 +530,11 @@ if(list.get(position)=="Choose data centre")
             Time=temp.getProperty(5).toString();
         }
     }
+    private String getDateTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
 }
+

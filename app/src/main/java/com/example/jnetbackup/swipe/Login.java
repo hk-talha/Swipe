@@ -307,7 +307,7 @@ Log.d("Branchid and BRanch name",Branch_id.toString());
                 // Assign it to resTxt variable static variable
                 resTxt = response;
                 response.getPropertyCount();
-                Log.d("response",response.getPropertyAsString(0)+""+response.getPropertyCount());
+             //   Log.d("response",response.getPropertyAsString(0)+""+response.getPropertyCount());
 
             } catch (Exception e) {
                 //Print error

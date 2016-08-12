@@ -36,6 +36,7 @@ public class Table extends AppCompatActivity {
         items=new ArrayList<String[]>();
         TableView<String[]> tableView = (TableView<String[]>) findViewById(R.id.tableView);
         int colorEvenRows = android.R.color.white;
+        setTitle("Database");
         tableView.setColumnWeight(3,2);
         int colorOddRows = R.color.black;
         tableView.setDataRowBackgroundProvider(TableDataRowBackgroundProviders.alternatingRowColors(colorEvenRows, colorOddRows));
@@ -75,7 +76,7 @@ Select();
     }
     void Select() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
+      Delete();
 // Define a projection that specifies which columns from the database
 // you will actually use after this query.
         String[] projection = {
@@ -107,13 +108,22 @@ Select();
                         .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TIME
                         ));
                 insertrow(i++,temp,temp1,temp2,temp3);
-                Log.d("Cursor ", "" + temp);
+                Log.d("time ", result.getString(result
+                        .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME
+                        )));
                 //
                 // list.add(name);
                 result.moveToNext();
             }
         }
     }
+
+    private void Delete() {
+        SQLiteDatabase db =  mDbHelper.getWritableDatabase();
+        String sql = "DELETE FROM "+ FeedReaderContract.FeedEntry.TABLE_NAME+" WHERE "+ FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME+" <= date('now','-1 day')";
+       db.execSQL(sql);
+    }
+
     void Select(int i) {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 

@@ -85,9 +85,9 @@ TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Bran
         };
         //Add New Tab
 
-       actionBar.addTab(actionBar.newTab().setText("Karim Centre").setTag("kar").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-       actionBar.addTab(actionBar.newTab().setText("Bahadurabad").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Nazaimabad").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+       actionBar.addTab(actionBar.newTab().setText("Branch 1").setTag("kar").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+       actionBar.addTab(actionBar.newTab().setText("Branch 2").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+        actionBar.addTab(actionBar.newTab().setText("Branch 3").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
 actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
     }
 

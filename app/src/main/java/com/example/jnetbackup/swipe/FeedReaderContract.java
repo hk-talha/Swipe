@@ -16,7 +16,7 @@ public final  class FeedReaderContract {
         public static final String COLUMN_NAME_SOMKE="updated";
         public static final String COLUMN_NAME_HUMIDITY = "subtitle";
         public static final String COLUMN_NAME_TIME = "subt";
-        public static final String COLUMN_NAME_CONTENT = "content";
+        public static final String COLUMN_NAME_INSERT_TIME= "content";
         public static final String COLUMN_NAME_NULLABLE = "null";
 
     }

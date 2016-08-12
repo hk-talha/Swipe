@@ -117,7 +117,9 @@ public class Sql extends AppCompatActivity {
                                     .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TIME
                                     ));
                             insertrow(i++,temp,temp1,temp2,temp3);
-                            Log.d("Cursor ", "" + temp);
+                            Log.d("time ", result.getString(result
+                                    .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME
+                                    )));
                             //
                             // list.add(name);
                             result.moveToNext();
