@@ -14,6 +14,8 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     ArrayList<String> branch_id=new ArrayList<String>();
     ArrayList<String> branch_name=new ArrayList<String>();
     Context c;
+ String username;
+
     public TabPagerAdapter(FragmentManager fm) {
         super(fm);
 
@@ -25,14 +27,14 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
         switch (i) {
             case 0:
                 //Fragement for Android Tab
-                return new Android("119.157.128.3:2000","Karim Centre",branch_id,branch_name,c);
+                return new Android("119.157.128.3:2000","Karim Centre",branch_id,branch_name,c,username);
             case 1:
                 //Fragment for Ios Tab
 
-                return new Android("119.157.128.3:2030","Bahadurabad",branch_id,branch_name,c);
+                return new Android("119.157.128.3:2030","Bahadurabad",branch_id,branch_name,c,username);
             case 2:
                 //Fragment for Windows Tab
-                return new Android("119.157.128.3:2000","Nazimabad",branch_id,branch_name,c);
+                return new Android("119.157.128.3:2000","Nazimabad",branch_id,branch_name,c,username);
         }
         return null;
 
@@ -43,9 +45,10 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
         // TODO Auto-generated method stub
         return 3; //No of Tabs
     }
-   public void  putExtra(ArrayList<String> branch_id,ArrayList<String> branch_name,Context a)
+   public void  putExtra(ArrayList<String> branch_id,ArrayList<String> branch_name,Context a,String username)
    {
       this.branch_id=branch_id;
+       this.username=username;
        this.branch_name=branch_name;
        c=a;
    }

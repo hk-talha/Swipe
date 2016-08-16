@@ -20,7 +20,7 @@ public class WebService {
     private final static String SOAP_ACTION1 = "https://jms.hopto.org:807/GetUpdatedDataInDevice";
     private final static String METHOD_NAME = "AuthenticateUser";
 
-    public static SoapObject invokeHelloWorldWS(String name, String Pass, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public static SoapObject invokeHelloWorldWS(String username,long name, String Pass, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         SoapObject resTxt = null;
         // Create request
         SoapObject request = new SoapObject(NAMESPACE,"GetUpdatedDataInDevice");
@@ -28,15 +28,19 @@ public class WebService {
         // Property which holds input parameters
         PropertyInfo Branch_id = new PropertyInfo();
         Branch_id.setName("Device_id");
-        Branch_id.setValue(1);
+        Branch_id.setValue(name);
         Branch_id.setType(long.class);
         request.addProperty(Branch_id);
         PropertyInfo Token = new PropertyInfo();
         Token.setName("Token");
-        Token.setValue("asdasd");
+        Token.setValue(Pass);
         Token.setType(String.class);
         request.addProperty(Token);
-
+        PropertyInfo user = new PropertyInfo();
+        user.setName("userName");
+        user.setValue(username);
+        user.setType(String.class);
+        request.addProperty(user);
 
 
         // Create envelope
@@ -69,22 +73,28 @@ response.getPropertyCount();
         //Return resTxt to calling object
         return resTxt;
     }
-    public static SoapObject invokeHelloWorldWS(Long branch_id, String token, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+    public static SoapObject invokeHelloWorldWS(Long branch_id,String username, String token, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         SoapObject resTxt = null;
         // Create request
+        Log.d("Values",username+token+"branch"+branch_id);
         SoapObject request = new SoapObject(NAMESPACE, s);
 
         // Property which holds input parameters
         PropertyInfo Branch_id = new PropertyInfo();
         Branch_id.setName("Branch_id");
-        Branch_id.setValue(1);
+        Branch_id.setValue(branch_id);
         Branch_id.setType(long.class);
         request.addProperty(Branch_id);
         PropertyInfo Token = new PropertyInfo();
         Token.setName("Token");
-        Token.setValue("asdasd");
+        Token.setValue(username);
         Token.setType(String.class);
         request.addProperty(Token);
+        PropertyInfo user = new PropertyInfo();
+        user.setName("username");
+        user.setValue(token);
+        user.setType(String.class);
+        request.addProperty(user);
 
 
 

@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity {
         Log.d("BUNDLE",b.get("Branch_id").toString());
 setTitle("EMS");
         TabAdapter = new TabPagerAdapter(getSupportFragmentManager());
-TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Branch_name"),this);
+TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Branch_name"),this,b.getString("username"));
         Tab = (ViewPager)findViewById(R.id.pager);
 
         if (Tab != null) {

@@ -29,6 +29,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -69,7 +70,9 @@ public static String ip1;
     ArrayList<String> Device_id;
     Context context;
     DonutProgress progress,progress1,progress2;
-    public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c) {
+    String username;
+    long branchId,deviceId;
+    public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c,String username) {
         ip1=ip;
         this.name=name;
         Branch_id=t;
@@ -77,6 +80,7 @@ public static String ip1;
         context=c;
         Values= new ArrayList<String>();
         Device_id=new ArrayList<String>();
+    this.username=username;
     }
     public Android(){}
 
@@ -127,6 +131,17 @@ public static String ip1;
                 R.layout.spinner    ,Device_id);
         Device_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         spinner1.setAdapter(Device_adapter);
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                deviceId = Long.parseLong(Device_id.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 // Specify the layout to use when the list of choices appears
         //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -139,7 +154,7 @@ public static String ip1;
                 // ;
              //   int spinnerPosition = adapter.getPosition(name);
                // spinner.setSelection(spinnerPosition);
-
+branchId= Long.parseLong(Branch_id.get(position));
                 Async_Ksoap soap = new Async_Ksoap();
                 soap.execute();
 
@@ -181,7 +196,8 @@ if(list.get(position)=="Choose data centre")
               //  Sql sql = new Sql();
              //   insert("15","55","50");
               //  AsyncTaskRunner runner = new AsyncTaskRunner();
-            //    runner.execute(ip1);
+            //    runner.execute(ip1);8020187300016
+
               //  Select();
                 //runner.get();
 //tv.setText("hi");
@@ -398,7 +414,8 @@ if(list.get(position)=="Choose data centre")
         protected SoapObject doInBackground(String... params) {
             WebService ws = new WebService();
             try {
-                result= ws.invokeHelloWorldWS((long) 1,"ghjg","GetListOfDevicesInBranch");
+                Log.d("branchid",""+branchId);
+                result= ws.invokeHelloWorldWS(branchId,gettoken(),username,"GetListOfDevicesInBranch");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -415,11 +432,22 @@ if(list.get(position)=="Choose data centre")
                 Device_id.add(temp.getProperty(1).toString());
                 Device_adapter.notifyDataSetChanged();
 
-                Device_id=new ArrayList<String>();
+
             }
         //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
         }
     }
+
+    private String gettoken() {
+        final String[] token = new String[1];
+
+                 token[0] =   FirebaseInstanceId.getInstance().getToken();
+
+
+
+        return token[0];
+    }
+
     class Async_Ksoap_Device extends AsyncTask<String, String, SoapObject>
     {
         SoapObject result;
@@ -433,7 +461,8 @@ if(list.get(position)=="Choose data centre")
         protected SoapObject doInBackground(String... params) {
             WebService ws = new WebService();
             try {
-                result= ws.invokeHelloWorldWS("","ghjg","GetUpdatedDataInDevice");
+                Log.d("id",""+deviceId);
+                result= ws.invokeHelloWorldWS(username,deviceId,gettoken(),"GetUpdatedDataInDevice");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -522,12 +551,17 @@ if(list.get(position)=="Choose data centre")
     }
 
     private void parseobject(SoapObject s) {
-        for(int i = 0 ;i<s.getPropertyCount();i++)
+        try {
+            for (int i = 0; i < s.getPropertyCount(); i++) {
+                SoapObject temp = (SoapObject) s.getProperty(i);
+                Log.d("Values", temp.getProperty(4).toString());
+                Values.add(temp.getProperty(4).toString());
+                Time = temp.getProperty(5).toString();
+            }
+        }
+        catch (NullPointerException e)
         {
-            SoapObject temp = (SoapObject) s.getProperty(i);
-            Log.d("Values",temp.getProperty(4).toString());
-            Values.add(temp.getProperty(4).toString());
-            Time=temp.getProperty(5).toString();
+            e.printStackTrace();
         }
     }
     private String getDateTime() {

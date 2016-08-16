@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "1034502199716",
-    "firebase_url": "https://auth-69495.firebaseio.com",
-    "project_id": "auth-69495",
-    "storage_bucket": "auth-69495.appspot.com"
+    "project_number": "245709814543",
+    "firebase_url": "https://jmsapp-a4a4d.firebaseio.com",
+    "project_id": "jmsapp-a4a4d",
+    "storage_bucket": "jmsapp-a4a4d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1034502199716:android:a8f235c2b645e914",
+        "mobilesdk_app_id": "1:245709814543:android:a8f235c2b645e914",
         "android_client_info": {
           "package_name": "com.example.jnetbackup.swipe"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1034502199716-v9u7q2prj8sgl6f982jjnkmo6embop0g.apps.googleusercontent.com",
+          "client_id": "245709814543-d8i5nv4edctqestjk76htbc2kv2mpebc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAQvlYN6EmbrynfWeFbQv9J0GlijoKm6jI"
+          "current_key": "AIzaSyAP3wE5KYj_V4D0e4qMLGqv78B1GUjUBXM"
         }
       ],
       "services": {

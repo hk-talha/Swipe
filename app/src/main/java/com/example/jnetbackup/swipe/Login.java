@@ -18,6 +18,9 @@ import android.widget.Toast;
 //import com.firebase.client.AuthData;
 //import com.firebase.client.Firebase;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -45,7 +48,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.concurrent.ExecutionException;
 
 public class Login extends AppCompatActivity {
 
@@ -54,6 +56,7 @@ public class Login extends AppCompatActivity {
     EditText et,et1;
     ArrayList<String> Branch_name=new ArrayList<String>();
     ArrayList<String> Branch_id=new ArrayList<String>();
+    String token;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,7 @@ public class Login extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-Async_Ksoap soap= new Async_Ksoap();
+Aync_login soap=new Aync_login();
                 soap.execute(et.getText().toString(),et1.getText().toString());
 
 //                AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -110,6 +113,48 @@ Async_Ksoap soap= new Async_Ksoap();
     private void authentication() {
        // GoogleAuthUtil.getToken()
 
+    }
+    class Aync_login extends AsyncTask<String, String, String>
+    {String result;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Log.d("Return",s.toString());
+            if(s.equals("true"))
+            {
+                FirebaseMessaging.getInstance().subscribeToTopic("test");
+                 token=   FirebaseInstanceId.getInstance().getToken();
+               // EditText et = (EditText) findViewById(R.id.editText);
+             //   et.setText(token);
+                Log.d("token",token);
+                Async_Ksoap soap= new Async_Ksoap();
+                soap.execute(token,et.getText().toString(),"");
+                Global.Counter1.set(0);
+                Global.Counter2.set(0);
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            WebServic ws = new WebServic();
+            try {
+                result= ws.invokeHelloWorldWS(params[0],params[1]);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+            return result;
+
+        }
     }
 class Async_Ksoap extends AsyncTask<String,String,SoapObject>
 {
@@ -166,6 +211,7 @@ int count=0;
 
                     //   Log.d("Return2",tokens.nextToken()+tokens.nextToken());
                     Branch_id.add(tokens.nextToken());
+                    tokens.nextToken();
                     Branch_name.add(tokens.nextToken());
                 }
 
@@ -179,14 +225,16 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
         Bundle b =new Bundle();
         b.putStringArrayList("Branch_id",Branch_id);
         b.putStringArrayList("Branch_name",Branch_name);
-
+        b.putString("username",et.getText().toString());
+        b.putString("token",token);
+        Log.d("Branchid and BRanch name",Branch_id.toString());
        // b.putStringArray("Branch_id",Branch_id);
         //i.putExtra("Branch_id",Branch_id);
         i.putExtras(b);
         Branch_name=new ArrayList<String>();
         Branch_id=new ArrayList<String>();
         startActivity(i);
-Log.d("Branchid and BRanch name",Branch_id.toString());
+
     }
 }
     private void jsonresult(String result) throws JSONException {
@@ -267,12 +315,63 @@ Log.d("Branchid and BRanch name",Branch_id.toString());
         private final static String NAMESPACE = "https://jms.hopto.org:807";
         private final static String URL = "https://jms.hopto.org:805/JMS_Auth_WebService.asmx";
         private final static String SOAP_ACTION = "https://jms.hopto.org:807/AuthenticateUser";
-        private final static String METHOD_NAME = "AuthenticateUser";
+        private final static String SOAP_ACTION1 =     "https://jms.hopto.org:807/SaveTokenAndGetBranches";
+        private final static String METHOD_NAME = "SaveTokenAndGetBranches";
+        private final static String METHOD_NAME1 = "AuthenticateUser";
 
-        public SoapObject invokeHelloWorldWS(String name, String Pass, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        public SoapObject invokeHelloWorldWS(String token, String userName, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
             SoapObject resTxt = null;
             // Create request
             SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+
+            // Property which holds input parameters
+            PropertyInfo CountryName = new PropertyInfo();
+            CountryName.setName("token");
+            CountryName.setValue(token);
+            CountryName.setType(String.class);
+            request.addProperty(CountryName);
+            PropertyInfo CityName = new PropertyInfo();
+            CityName.setName("userName");
+            CityName.setValue(userName);
+            CityName.setType(String.class);
+            request.addProperty(CityName);
+
+
+
+            // Create envelope
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(
+                    SoapEnvelope.VER11);
+            //Set envelope as dotNet
+            envelope.dotNet = true;
+            // Set output SOAP object
+            envelope.setOutputSoapObject(request);
+            // Create HTTP call object
+            SSlconnection.allowAllSSL();
+            HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+            try {
+                // Invoke web service
+                androidHttpTransport.call(SOAP_ACTION1, envelope);
+                // Get the response
+                SoapObject response=(SoapObject)envelope.getResponse();
+                // Assign it to resTxt variable static variable
+                resTxt = response;
+                response.getPropertyCount();
+             //   Log.d("response",response.getPropertyAsString(0)+""+response.getPropertyCount());
+
+            } catch (Exception e) {
+                //Print error
+                e.printStackTrace();
+                //Assign error message to resTxt
+               // resTxt = "Error occured";
+            }
+            //Return resTxt to calling object
+            return resTxt;
+        }
+        public String invokeHelloWorldWS(String name, String Pass) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+            String resTxt = null;
+            // Create request
+            SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME1);
 
             // Property which holds input parameters
             PropertyInfo CountryName = new PropertyInfo();
@@ -303,17 +402,18 @@ Log.d("Branchid and BRanch name",Branch_id.toString());
                 // Invoke web service
                 androidHttpTransport.call(SOAP_ACTION, envelope);
                 // Get the response
-                SoapObject response=(SoapObject)envelope.getResponse();
+                Log.d("Response",envelope.getResponse().toString());
+                String response=  envelope.getResponse().toString();
                 // Assign it to resTxt variable static variable
                 resTxt = response;
-                response.getPropertyCount();
-             //   Log.d("response",response.getPropertyAsString(0)+""+response.getPropertyCount());
+                //response.getPropertyCount();
+                //   Log.d("response",response.getPropertyAsString(0)+""+response.getPropertyCount());
 
             } catch (Exception e) {
                 //Print error
                 e.printStackTrace();
                 //Assign error message to resTxt
-               // resTxt = "Error occured";
+                // resTxt = "Error occured";
             }
             //Return resTxt to calling object
             return resTxt;
