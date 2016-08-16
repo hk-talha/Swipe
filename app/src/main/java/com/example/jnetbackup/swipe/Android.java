@@ -407,7 +407,7 @@ if(list.get(position)=="Choose data centre")
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+Device_id.clear();
         }
 
         @Override
@@ -427,6 +427,7 @@ if(list.get(position)=="Choose data centre")
 
         @Override
         protected void onPostExecute(SoapObject s) {
+
             for(int i = 0 ;i<s.getPropertyCount();i++) {
                 SoapObject temp = (SoapObject) s.getProperty(i);
                 Device_id.add(temp.getProperty(1).toString());
@@ -434,6 +435,7 @@ if(list.get(position)=="Choose data centre")
 
 
             }
+
         //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
         }
     }
