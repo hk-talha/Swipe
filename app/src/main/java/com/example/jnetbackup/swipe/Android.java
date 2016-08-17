@@ -147,17 +147,26 @@ public static String ip1;
         {
             e.printStackTrace();
         }
+
             spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(Device_id.get(position)=="No Devices")
+                {Log.d("device_id",""+Device_id.get(position));
+                    b.setEnabled(false);
+                }
+                else
+                {
+                    Log.d("device_id",""+Device_id.get(position));
                 deviceId = Long.parseLong(Device_id.get(position));
-            }
-
+            b.setEnabled(true);
+                }}
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
+
 // Specify the layout to use when the list of choices appears
         //  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
@@ -417,52 +426,60 @@ if(list.get(position)=="Choose data centre")
             }
         }
     }
-    class Async_Ksoap extends AsyncTask<String, String, SoapObject>
-    {
+    class Async_Ksoap extends AsyncTask<String, String, SoapObject> {
         SoapObject result;
 
         @Override
         protected void onPreExecute() {
-Device_id.clear();
+            Device_id.clear();
         }
 
         @Override
         protected SoapObject doInBackground(String... params) {
             WebService ws = new WebService();
             try {
-                Log.d("branchid",""+branchId);
-                result= ws.invokeHelloWorldWS(branchId,gettoken(),username,"GetListOfDevicesInBranch");
+                Log.d("branchid", "" + branchId);
+                result = ws.invokeHelloWorldWS(branchId, gettoken(), username, "GetListOfDevicesInBranch");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();
             }
-            Log.d("result",result.toString());
+            Log.d("result", result.toString());
             return result;
         }
 
         @Override
         protected void onPostExecute(SoapObject s) {
-SoapObject o= (SoapObject) s.getProperty(0);
-            Log.d("token Status",o.getProperty("Token_Status").toString());
-            if(o.getProperty("Token_Status").toString().equals("Verified.")) {
-                for (int i = 0; i < s.getPropertyCount(); i++) {
-                    SoapObject temp = (SoapObject) s.getProperty(i);
-                    Device_id.add(temp.getProperty(1).toString());
-                    Device_adapter.notifyDataSetChanged();
+            try {
+                b.setEnabled(true);
+                SoapObject o = (SoapObject) s.getProperty(0);
+                Log.d("token Status", o.getProperty("Token_Status").toString());
+                if (o.getProperty("Token_Status").toString().equals("Verified.")) {
+
+                    for (int i = 0; i < s.getPropertyCount(); i++) {
+                        SoapObject temp = (SoapObject) s.getProperty(i);
+                        Device_id.add(temp.getProperty(1).toString());
+                        Device_adapter.notifyDataSetChanged();
 
 
+                    }
+                    deviceId= Long.parseLong(Device_id.get(0));
+                    Log.d("Device_id",""+deviceId);
+                } else {
+                    Toast.makeText(getActivity().getApplicationContext(), "Token Expired Login Again", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(getActivity(), Login.class));
                 }
+                //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
+            } catch (Exception e) {
+                e.printStackTrace();
+              //  Device_id=new ArrayList<String>();
+                Device_id.add("No Devices");
+                b.setEnabled(false);
+                Device_adapter.notifyDataSetChanged();
             }
-            else
-            {
-                Toast.makeText(getActivity().getApplicationContext(),"Token Expired Login Again",Toast.LENGTH_LONG).show();
-                startActivity(new Intent(getActivity(),Login.class));
-            }
-        //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
         }
     }
-
     private String gettoken() {
         final String[] token = new String[1];
 

@@ -30,7 +30,7 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setContentTitle("FCM Test")
                 .setContentText(data)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.warning)
                 .setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
