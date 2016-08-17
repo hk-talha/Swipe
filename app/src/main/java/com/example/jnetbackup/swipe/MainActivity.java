@@ -26,6 +26,11 @@ public class MainActivity extends ActionBarActivity {
     android.support.v7.app.ActionBar actionBar;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
     }
@@ -90,9 +95,9 @@ TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Bran
         };
         //Add New Tab
 
-       actionBar.addTab(actionBar.newTab().setText("Branch 1").setTag("kar").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-       actionBar.addTab(actionBar.newTab().setText("Branch 2").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Branch 3").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+       actionBar.addTab(actionBar.newTab().setText("Branch").setTag("kar").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+    //   actionBar.addTab(actionBar.newTab().setText("Branch 2").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+      //  actionBar.addTab(actionBar.newTab().setText("Branch 3").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
 actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
     }
 
@@ -111,13 +116,27 @@ actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.action_cart:
-                startActivity(new Intent(getBaseContext(),Table.class));
-                Toast.makeText(getApplicationContext(),"selected",Toast.LENGTH_LONG).show();
 
+        if(item.getItemId()==R.id.action_cart)
+        {
+            startActivity(new Intent(getBaseContext(),Table.class));
+            Toast.makeText(getApplicationContext(),"selected",Toast.LENGTH_LONG).show();
         }
+        else
+        if(item.getItemId()==R.id.action_settings)
+        {
+            startActivity(new Intent(getApplicationContext(),Login.class));
+            finish();
+        }
+//        switch (item.getItemId())
+//        {
+//
+//            case R.id.action_settings:
+//                startActivity(new Intent(getApplicationContext(),Login.class));
+//            case R.id.action_cart:
+//                startActivity(new Intent(getBaseContext(),Table.class));
+//                Toast.makeText(getApplicationContext(),"selected",Toast.LENGTH_LONG).show();
+//        }
         return super.onOptionsItemSelected(item);
     }
 }

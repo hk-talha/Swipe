@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.lzyzsd.circleprogress.DonutProgress;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -72,6 +74,7 @@ public static String ip1;
     DonutProgress progress,progress1,progress2;
     String username;
     long branchId,deviceId;
+    private static final String STATE_ITEMS ="device_id";
     public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c,String username) {
         ip1=ip;
         this.name=name;
@@ -84,10 +87,17 @@ public static String ip1;
     }
     public Android(){}
 
+
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mDbHelper = new FeedReaderDbHelper(getActivity());
+      //  assert savedInstanceState != null;
+    //    Device_id=savedInstanceState.getStringArrayList("device_id");
     }
 
     @Override
@@ -130,8 +140,14 @@ public static String ip1;
         Device_adapter = new ArrayAdapter<String>(this.getActivity(),
                 R.layout.spinner    ,Device_id);
         Device_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        spinner1.setAdapter(Device_adapter);
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        try {
+            spinner1.setAdapter(Device_adapter);
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
+            spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 deviceId = Long.parseLong(Device_id.get(position));
@@ -427,15 +443,22 @@ Device_id.clear();
 
         @Override
         protected void onPostExecute(SoapObject s) {
+SoapObject o= (SoapObject) s.getProperty(0);
+            Log.d("token Status",o.getProperty("Token_Status").toString());
+            if(o.getProperty("Token_Status").toString().equals("Verified.")) {
+                for (int i = 0; i < s.getPropertyCount(); i++) {
+                    SoapObject temp = (SoapObject) s.getProperty(i);
+                    Device_id.add(temp.getProperty(1).toString());
+                    Device_adapter.notifyDataSetChanged();
 
-            for(int i = 0 ;i<s.getPropertyCount();i++) {
-                SoapObject temp = (SoapObject) s.getProperty(i);
-                Device_id.add(temp.getProperty(1).toString());
-                Device_adapter.notifyDataSetChanged();
 
-
+                }
             }
-
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(),"Token Expired Login Again",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(),Login.class));
+            }
         //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
         }
     }
@@ -554,11 +577,20 @@ Device_id.clear();
 
     private void parseobject(SoapObject s) {
         try {
-            for (int i = 0; i < s.getPropertyCount(); i++) {
-                SoapObject temp = (SoapObject) s.getProperty(i);
-                Log.d("Values", temp.getProperty(4).toString());
-                Values.add(temp.getProperty(4).toString());
-                Time = temp.getProperty(5).toString();
+            SoapObject o= (SoapObject) s.getProperty(0);
+            Log.d("token Status",o.getProperty("Token_Status").toString());
+            if(o.getProperty("Token_Status").toString().equals("Verified")) {
+                for (int i = 0; i < s.getPropertyCount(); i++) {
+                    SoapObject temp = (SoapObject) s.getProperty(i);
+                    Log.d("Values", temp.getProperty(5).toString());
+                    Values.add(temp.getProperty(5).toString());
+                    Time = temp.getProperty(6).toString();
+                }
+            }
+            else
+            {
+                Toast.makeText(getActivity().getApplicationContext(),"Token Expired Login Again",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getActivity(),Login.class));
             }
         }
         catch (NullPointerException e)

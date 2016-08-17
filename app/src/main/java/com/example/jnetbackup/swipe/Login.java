@@ -123,22 +123,26 @@ Aync_login soap=new Aync_login();
 
         @Override
         protected void onPostExecute(String s) {
+            try {
             Log.d("Return",s.toString());
-            if(s.equals("true"))
-            {
-                FirebaseMessaging.getInstance().subscribeToTopic("test");
-                 token=   FirebaseInstanceId.getInstance().getToken();
-               // EditText et = (EditText) findViewById(R.id.editText);
-             //   et.setText(token);
-                Log.d("token",token);
-                Async_Ksoap soap= new Async_Ksoap();
-                soap.execute(token,et.getText().toString(),"");
-                Global.Counter1.set(0);
-                Global.Counter2.set(0);
+
+                if (s.equals("true")) {
+                    FirebaseMessaging.getInstance().subscribeToTopic("test");
+                    token = FirebaseInstanceId.getInstance().getToken();
+                    // EditText et = (EditText) findViewById(R.id.editText);
+                    //   et.setText(token);
+                    Log.d("token", token);
+                    Async_Ksoap soap = new Async_Ksoap();
+                    soap.execute(token, et.getText().toString(), "");
+                    Global.Counter1.set(0);
+                    Global.Counter2.set(0);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Invalid Username or Password", Toast.LENGTH_LONG).show();
+                }
             }
-            else
+            catch (NullPointerException e)
             {
-                Toast.makeText(getApplicationContext(),"Invalid Username or Password",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
             }
         }
 
@@ -234,6 +238,7 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
         Branch_name=new ArrayList<String>();
         Branch_id=new ArrayList<String>();
         startActivity(i);
+        finish();
 
     }
 }

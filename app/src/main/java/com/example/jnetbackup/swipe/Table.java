@@ -119,6 +119,7 @@ Select();
     }
 
     private void Delete() {
+        Log.d("date","date('now')");
         SQLiteDatabase db =  mDbHelper.getWritableDatabase();
         String sql = "DELETE FROM "+ FeedReaderContract.FeedEntry.TABLE_NAME+" WHERE "+ FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME+" <= date('now','-1 day')";
        db.execSQL(sql);
