@@ -1,5 +1,8 @@
 package com.example.jnetbackup.swipe;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -64,7 +67,7 @@ public class Login extends AppCompatActivity {
         et = (EditText) findViewById(R.id.editText);
         et1 = (EditText) findViewById(R.id.editText2);
         CheckBox cb  = (CheckBox) findViewById(R.id.checkBox);
-        Button b= (Button) findViewById(R.id.button2);
+        final Button b= (Button) findViewById(R.id.button2);
       //  authentication();
         Branch_name=new ArrayList<String>();
         Branch_id=new ArrayList<String>();
@@ -86,6 +89,7 @@ public class Login extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startColorAnimation(b);
 Aync_login soap=new Aync_login();
                 soap.execute(et.getText().toString(),et1.getText().toString());
 
@@ -114,6 +118,22 @@ Aync_login soap=new Aync_login();
        // GoogleAuthUtil.getToken()
 
     }
+
+
+    private void startColorAnimation(View v) {
+        int colorStart = v.getSolidColor();
+        int colorEnd = R.color.dark_primary_color;
+
+        ValueAnimator colorAnim = ObjectAnimator.ofInt(v,
+                "backgroundColor", colorStart, colorEnd);
+
+        colorAnim.setDuration(100);
+        colorAnim.setEvaluator(new ArgbEvaluator());
+        colorAnim.setRepeatCount(1);
+        colorAnim.setRepeatMode(ValueAnimator.REVERSE);
+        colorAnim.start();
+    }
+
     class Aync_login extends AsyncTask<String, String, String>
     {String result;
         @Override
