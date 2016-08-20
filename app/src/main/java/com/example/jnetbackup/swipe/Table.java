@@ -25,7 +25,7 @@ import de.codecrafters.tableview.toolkit.TableDataRowBackgroundProviders;
 public class Table extends AppCompatActivity {
     private static final String[][] DATA_TO_SHOW = { { "This", "is", "a", "test" },
             { "and", "a", "second", "test" } };
-    ArrayList<String[]>  items;
+    ArrayList<String[]>  items1;
     SimpleTableDataAdapter adapter;
     FeedReaderDbHelper mDbHelper ;
     @Override
@@ -33,16 +33,16 @@ public class Table extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.table);
         mDbHelper= new FeedReaderDbHelper(this);
-        items=new ArrayList<String[]>();
+        items1=new ArrayList<String[]>();
         TableView<String[]> tableView = (TableView<String[]>) findViewById(R.id.tableView);
         int colorEvenRows = android.R.color.white;
         setTitle("Database");
-        tableView.setColumnWeight(3,2);
+       // tableView.setColumnWeight(3,2);
         int colorOddRows = R.color.black;
         tableView.setDataRowBackgroundProvider(TableDataRowBackgroundProviders.alternatingRowColors(colorEvenRows, colorOddRows));
-        tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(this,new String[]{ "Temperature","Smoke","Humidity","Time"}));
+        tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(this, "Temperature","Smoke","Humidity","Time","BranchName"));
     //    SimpleTableDataAdapter st=new SimpleTableDataAdapter(this, DATA_TO_SHOW);
-        adapter= new SimpleTableDataAdapter(this,  items);
+        adapter= new SimpleTableDataAdapter(this,  items1);
         tableView.setDataAdapter(adapter);
 Select();
 
@@ -67,10 +67,11 @@ Select();
                 values);
         //tv.setText(""+newRowId);
     }
-    void insertrow(int i,String temp,String Smoke,String Humidity,String time)
+    void insertrow(int i,String temp,String Smoke,String Humidity,String time,String branch)
     {
-        Log.d("Val",temp);
-       items.add(new String[]{temp,Smoke,Humidity,time});
+
+       items1.add(new String[]{temp,Smoke,Humidity,time,branch});
+        Log.d("Val",items1.get(0).toString());
         adapter.notifyDataSetChanged();
 
     }
@@ -107,9 +108,12 @@ Select();
                 String temp3= result.getString(result
                         .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_TIME
                         ));
-                insertrow(i++,temp,temp1,temp2,temp3);
-                Log.d("time ", result.getString(result
-                        .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME
+                String temp4= result.getString(result
+                        .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_Branch
+                        ));
+                insertrow(i++,temp,temp1,temp2,temp3,temp4);
+                Log.d("branch ", result.getString(result
+                        .getColumnIndex(FeedReaderContract.FeedEntry.COLUMN_NAME_Branch
                         )));
                 //
                 // list.add(name);

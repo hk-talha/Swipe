@@ -19,14 +19,14 @@ public class FeedReaderDbHelper extends SQLiteOpenHelper {
                     FeedReaderContract.FeedEntry.COLUMN_NAME_SOMKE + TEXT_TYPE +COMMA_SEP  +
                     FeedReaderContract.FeedEntry.COLUMN_NAME_HUMIDITY + TEXT_TYPE +COMMA_SEP+
                     FeedReaderContract.FeedEntry.COLUMN_NAME_TIME + TEXT_TYPE +COMMA_SEP+
-                    FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME + TEXT_TYPE +
-
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME + TEXT_TYPE + COMMA_SEP +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_Branch + TEXT_TYPE +
      // Any other options for the CREATE command
             " )";
 
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + FeedReaderContract.FeedEntry.TABLE_NAME;
-    public static final int DATABASE_VERSION = 8;
+    public static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "FeedReader.db";
     public FeedReaderDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

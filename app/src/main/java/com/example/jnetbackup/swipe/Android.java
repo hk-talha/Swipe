@@ -75,6 +75,8 @@ public static String ip1;
     String username;
     long branchId,deviceId;
     private static final String STATE_ITEMS ="device_id";
+    private String branchname;
+
     public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c,String username) {
         ip1=ip;
         this.name=name;
@@ -375,7 +377,7 @@ if(list.get(position)=="Choose data centre")
             // progress. For example updating ProgessDialog
         }
     }
-    void insert(String Temp,String Smoke,String Humidity,String time)
+    void insert(String Temp,String Smoke,String Humidity,String time,String branchname)
     {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -387,6 +389,7 @@ if(list.get(position)=="Choose data centre")
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_SOMKE, Humidity);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TIME, time);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_INSERT_TIME,getDateTime());
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_Branch,branchname);
 
 // Insert the new row, returning the primary key value of the new row
         long newRowId;
@@ -580,7 +583,7 @@ if(list.get(position)=="Choose data centre")
                 e.printStackTrace();
             }
             Sql sql = new Sql();
-            insert(Values.get(0),Values.get(1),Values.get(2),Time);
+            insert(Values.get(0),Values.get(1),Values.get(2),Time,branchname);
             Values= new ArrayList<String>(); }
     }
 
@@ -602,6 +605,9 @@ if(list.get(position)=="Choose data centre")
                     Log.d("Values", temp.getProperty(5).toString());
                     Values.add(temp.getProperty(5).toString());
                     Time = temp.getProperty(6).toString();
+
+                    int h=Branch_id.indexOf(temp.getProperty(3).toString());
+               branchname=Branch_name.get(h);
                 }
             }
             else

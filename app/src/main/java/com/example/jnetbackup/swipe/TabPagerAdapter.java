@@ -28,15 +28,15 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 //Fragement for Android Tab
                 return new Android("119.157.128.3:2000","Karim Centre",branch_id,branch_name,c,username);
-            case 1:
-                //Fragment for Ios Tab
+           case 1:
+             //Fragment for Ios Tab
 
-                return new Android("119.157.128.3:2030","Bahadurabad",branch_id,branch_name,c,username);
+
             case 2:
-                //Fragment for Windows Tab
+               //Fragment for Windows Tab
                 return new Android("119.157.128.3:2000","Nazimabad",branch_id,branch_name,c,username);
         }
-        return null;
+       return null;
 
     }
 
