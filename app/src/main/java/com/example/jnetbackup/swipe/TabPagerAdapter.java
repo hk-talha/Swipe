@@ -43,7 +43,7 @@ public class TabPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
-        return 3; //No of Tabs
+        return 1; //No of Tabs
     }
    public void  putExtra(ArrayList<String> branch_id,ArrayList<String> branch_name,Context a,String username)
    {

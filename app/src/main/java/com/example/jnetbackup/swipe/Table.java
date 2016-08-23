@@ -37,7 +37,8 @@ public class Table extends AppCompatActivity {
         TableView<String[]> tableView = (TableView<String[]>) findViewById(R.id.tableView);
         int colorEvenRows = android.R.color.white;
         setTitle("Database");
-       // tableView.setColumnWeight(3,2);
+      //  tableView.setColumnWeight(3,2);
+        //tableView.setColumnWeight(4,2);
         int colorOddRows = R.color.black;
         tableView.setDataRowBackgroundProvider(TableDataRowBackgroundProviders.alternatingRowColors(colorEvenRows, colorOddRows));
         tableView.setHeaderAdapter(new SimpleTableHeaderAdapter(this, "Temperature","Smoke","Humidity","Time","BranchName"));

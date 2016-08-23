@@ -43,7 +43,13 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.security.MessageDigest;
@@ -60,10 +66,27 @@ public class Login extends AppCompatActivity {
     ArrayList<String> Branch_name=new ArrayList<String>();
     ArrayList<String> Branch_id=new ArrayList<String>();
     String token;
+    BufferedWriter bufferedWriter;
+    String Username,Password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter(new
+                    File(getFilesDir()+ File.separator+"MyFile.txt")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(SaveSharedPreference.getUserName(Login.this).length()!=0)
+        {
+            Aync_login soap=new Aync_login();
+            Username=SaveSharedPreference.getUserName(Login.this);
+            Password=SaveSharedPreference.getPass(Login.this);
+            Log.d("save user",Username+Password);
+            soap.execute(SaveSharedPreference.getUserName(Login.this),SaveSharedPreference.getPass(Login.this));
+        }
+
         et = (EditText) findViewById(R.id.editText);
         et1 = (EditText) findViewById(R.id.editText2);
         CheckBox cb  = (CheckBox) findViewById(R.id.checkBox);
@@ -86,11 +109,15 @@ public class Login extends AppCompatActivity {
     }
 });
         assert b != null;
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startColorAnimation(b);
+
 Aync_login soap=new Aync_login();
+                Username=et.getText().toString();
+                Password=et1.getText().toString();
                 soap.execute(et.getText().toString(),et1.getText().toString());
 
 //                AsyncTaskRunner runner = new AsyncTaskRunner();
@@ -147,13 +174,15 @@ Aync_login soap=new Aync_login();
             Log.d("Return",s.toString());
 
                 if (s.equals("true")) {
+                    SaveSharedPreference.setUserName(Login.this,Username);
+                    SaveSharedPreference.setPass(Login.this,Password);
                     FirebaseMessaging.getInstance().subscribeToTopic("test");
                     token = FirebaseInstanceId.getInstance().getToken();
                     // EditText et = (EditText) findViewById(R.id.editText);
                     //   et.setText(token);
                     Log.d("token", token);
                     Async_Ksoap soap = new Async_Ksoap();
-                    soap.execute(token, et.getText().toString(), "");
+                    soap.execute(token, Username, "");
                     Global.Counter1.set(0);
                     Global.Counter2.set(0);
                 } else {
@@ -249,7 +278,7 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
         Bundle b =new Bundle();
         b.putStringArrayList("Branch_id",Branch_id);
         b.putStringArrayList("Branch_name",Branch_name);
-        b.putString("username",et.getText().toString());
+        b.putString("username",Username);
         b.putString("token",token);
         Log.d("Branchid and BRanch name",Branch_id.toString());
        // b.putStringArray("Branch_id",Branch_id);
@@ -387,6 +416,7 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
             } catch (Exception e) {
                 //Print error
                 e.printStackTrace();
+                writetofile(e.toString());
                 //Assign error message to resTxt
                // resTxt = "Error occured";
             }
@@ -436,6 +466,7 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
 
             } catch (Exception e) {
                 //Print error
+                writetofile(e.toString());
                 e.printStackTrace();
                 //Assign error message to resTxt
                 // resTxt = "Error occured";
@@ -463,4 +494,32 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
             return convertToHex(sha1hash);
         }
     }
+    public void writetofile(String data)
+    {
+        try {
+
+            Process process = Runtime.getRuntime().exec("logcat -d");
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream()));
+
+            StringBuilder log=new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                log.append(line);
+            }
+            Log.d("file",log.toString());
+            bufferedWriter.append(log.toString());
+            //bufferedWriter.close();
+           // FileOutputStream fOut = openFileOutput("log", MODE_WORLD_READABLE);
+           // fOut.
+           // fOut.write(data.getBytes());
+           // fOut.close();
+            //Toast.makeText(getBaseContext(), "file saved", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        }
 }

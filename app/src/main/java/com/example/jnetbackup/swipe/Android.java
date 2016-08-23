@@ -44,6 +44,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.ksoap2.serialization.SoapObject;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -300,10 +301,12 @@ if(list.get(position)=="Choose data centre")
             list.add(a2);
             return list;
         } catch (ClientProtocolException e) {
+            writetofile(e.toString());
             // writing exception to log
             e.printStackTrace();
             Log.e("error",e.toString());
         } catch (IOException e) {
+            writetofile(e.toString());
             // writing exception to log
             e.printStackTrace();
             Log.e("error",e.toString());
@@ -444,8 +447,10 @@ if(list.get(position)=="Choose data centre")
                 Log.d("branchid", "" + branchId);
                 result = ws.invokeHelloWorldWS(branchId, gettoken(), username, "GetListOfDevicesInBranch");
             } catch (UnsupportedEncodingException e) {
+                writetofile(e.toString());
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
+                writetofile(e.toString());
                 e.printStackTrace();
             }
             Log.d("result", result.toString());
@@ -475,6 +480,7 @@ if(list.get(position)=="Choose data centre")
                 }
                 //    Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
             } catch (Exception e) {
+                writetofile(e.toString());
                 e.printStackTrace();
               //  Device_id=new ArrayList<String>();
                 Device_id.add("No Devices");
@@ -509,8 +515,10 @@ if(list.get(position)=="Choose data centre")
                 Log.d("id",""+deviceId);
                 result= ws.invokeHelloWorldWS(username,deviceId,gettoken(),"GetUpdatedDataInDevice");
             } catch (UnsupportedEncodingException e) {
+                writetofile(e.toString());
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
+                writetofile(e.toString());
                 e.printStackTrace();
             }
             Log.d("result",result.toString());
@@ -618,6 +626,7 @@ if(list.get(position)=="Choose data centre")
         }
         catch (NullPointerException e)
         {
+            writetofile(e.toString());
             e.printStackTrace();
         }
     }
@@ -626,6 +635,22 @@ if(list.get(position)=="Choose data centre")
                 "yyyy-MM-dd", Locale.getDefault());
         Date date = new Date();
         return dateFormat.format(date);
+    }
+    public void writetofile(String data)
+    {
+        try {
+
+
+            FileOutputStream fOut = getActivity().openFileOutput("log.txt",getActivity().MODE_WORLD_READABLE);
+            fOut.write(data.getBytes());
+            fOut.close();
+            //Toast.makeText(getBaseContext(), "file saved", Toast.LENGTH_SHORT).show();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 }
 

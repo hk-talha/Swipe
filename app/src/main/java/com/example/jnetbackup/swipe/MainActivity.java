@@ -125,6 +125,7 @@ actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
         else
         if(item.getItemId()==R.id.action_settings)
         {
+            SaveSharedPreference.clearUserName(MainActivity.this);
             startActivity(new Intent(getApplicationContext(),Login.class));
             finish();
         }
