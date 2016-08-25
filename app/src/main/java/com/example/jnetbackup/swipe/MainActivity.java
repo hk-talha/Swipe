@@ -41,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
       Bundle b=  getIntent().getExtras();
         Log.d("BUNDLE",b.get("Branch_id").toString());
-setTitle("EMS");
+setTitle("Jaffer Managment System");
         TabAdapter = new TabPagerAdapter(getSupportFragmentManager());
 TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Branch_name"),this,b.getString("username"));
         Tab = (ViewPager)findViewById(R.id.pager);
@@ -96,8 +96,8 @@ TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Bran
         //Add New Tab
 
        actionBar.addTab(actionBar.newTab().setText("Branch").setTag("kar").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-      actionBar.addTab(actionBar.newTab().setText("Branch").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
-        actionBar.addTab(actionBar.newTab().setText("Branch").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+     // actionBar.addTab(actionBar.newTab().setText("Branch").setTag("bad").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
+      //  actionBar.addTab(actionBar.newTab().setText("Branch").setTag("naz").setTabListener((android.support.v7.app.ActionBar.TabListener) tabListener));
 actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
     }
 

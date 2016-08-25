@@ -1,53 +1,55 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
+    android:weightSum="1"
+    android:background="@color/colorPrimary"
 
-    android:background="@color/colorPrimary">
-
-    <LinearLayout
-        android:orientation="vertical"
+    >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:id="@+id/imageView4"
+        android:src="@mipmap/jbslogo"
+        android:paddingTop="15dp"
+        android:background="@color/colorPrimary"/>
+    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:padding="10dp"
-        >
+        android:id="@+id/editText"
+        android:hint="Enter Username"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite" />
 
-        <EditText
-            android:id="@+id/etUserName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_top_bg"
-            android:padding="10dp"
-            android:hint="Email"
-            android:textColorHint="#FFFFFF"
-            android:drawableLeft="@drawable/email"/>
-        <EditText
-            android:id="@+id/etPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/edittext_bottom_bg"
-            android:layout_marginTop="-2dp"
-            android:padding="10dp"
-            android:hint="Password"
-            android:textColorHint="#FFFFFF"
-            android:password="true"
-            android:drawableLeft="@drawable/password"/>
-        <Button
-            android:id="@+id/btnSingIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:layout_margin="4dp"
-            android:text="Sign In"
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:inputType="textPassword"
+        android:hint="Enter Password"
+        android:textColor="@color/colorWhite"
+        android:textColorHint="@color/colorWhite"/>/>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Password"
+        android:textColor="@color/colorWhite"
+        android:id="@+id/checkBox"
+        android:checked="false" />
+    <Button
 
-            android:background="@drawable/button_default_bg"
-            />
-    </LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
 
-</RelativeLayout>
+        android:id="@+id/button2"
+        android:textColor="#ffffff"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/dark_primary_color"
+        android:layout_marginTop="15dp" />
+
+
+
+
+</LinearLayout>

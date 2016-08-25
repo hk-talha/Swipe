@@ -113,7 +113,7 @@ public class Login extends AppCompatActivity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startColorAnimation(b);
+               // startColorAnimation(b);
 
 Aync_login soap=new Aync_login();
                 Username=et.getText().toString();
