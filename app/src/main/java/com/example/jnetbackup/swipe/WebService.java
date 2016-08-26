@@ -1,6 +1,7 @@
 package com.example.jnetbackup.swipe;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
@@ -14,12 +15,11 @@ import java.security.NoSuchAlgorithmException;
 
 public class WebService {
     //Namespace of the Webservice - It is http://tempuri.org for .NET webservice
-    private final static String NAMESPACE = "https://jms.hopto.org:807";
+    private final static String NAMESPACE = "http://jms.hopto.org:806";
     private final static String URL = "https://jms.hopto.org:805/JMS_Auth_WebService.asmx";
-    private final static String SOAP_ACTION = "https://jms.hopto.org:807/GetListOfDevicesInBranch";
-    private final static String SOAP_ACTION1 = "https://jms.hopto.org:807/GetUpdatedDataInDevice";
+    private final static String SOAP_ACTION = "http://jms.hopto.org:806/GetListOfDevicesInBranch";
+    private final static String SOAP_ACTION1 = "http://jms.hopto.org:806/GetUpdatedDataInDevice";
     private final static String METHOD_NAME = "AuthenticateUser";
-
     public static SoapObject invokeHelloWorldWS(String username,long name, String Pass, String s) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         SoapObject resTxt = null;
         // Create request
@@ -67,6 +67,7 @@ response.getPropertyCount();
         } catch (Exception e) {
             //Print error
             e.printStackTrace();
+
             //Assign error message to resTxt
           //  resTxt = "Error occured";
         }

@@ -5,6 +5,7 @@ package com.example.jnetbackup.swipe;
  */
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -70,13 +71,14 @@ public static String ip1;
     String name;
     FeedReaderDbHelper mDbHelper ;
     ArrayAdapter<String> Device_adapter;
-    ArrayList<String> Device_id;
+    ArrayList<String> Device_id,Device_name;
     Context context;
     DonutProgress progress,progress1,progress2;
     String username;
     long branchId,deviceId;
     private static final String STATE_ITEMS ="device_id";
     private String branchname;
+    private ProgressDialog pDialog;
 
     public Android(String ip,String name,ArrayList<String> t,ArrayList<String> t1,Context c,String username) {
         ip1=ip;
@@ -86,6 +88,7 @@ public static String ip1;
         context=c;
         Values= new ArrayList<String>();
         Device_id=new ArrayList<String>();
+        Device_name=new ArrayList<String>();
     this.username=username;
     }
     public Android(){}
@@ -141,7 +144,7 @@ public static String ip1;
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
                 R.layout.spinner     ,Branch_name);
         Device_adapter = new ArrayAdapter<String>(this.getActivity(),
-                R.layout.spinner    ,Device_id);
+                R.layout.spinner    ,Device_name);
         Device_adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         try {
             spinner1.setAdapter(Device_adapter);
@@ -154,7 +157,7 @@ public static String ip1;
             spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(Device_id.get(position)=="No Devices")
+                if(Device_id.get(position)=="No Devices"||Device_name.get(position)=="Choose Device")
                 {Log.d("device_id",""+Device_id.get(position));
                     b.setEnabled(false);
                 }
@@ -182,9 +185,10 @@ public static String ip1;
                 // ;
              //   int spinnerPosition = adapter.getPosition(name);
                // spinner.setSelection(spinnerPosition);
-branchId= Long.parseLong(Branch_id.get(position));
-                Async_Ksoap soap = new Async_Ksoap();
-                soap.execute();
+
+                    branchId = Long.parseLong(Branch_id.get(position));
+                    Async_Ksoap soap = new Async_Ksoap();
+                    soap.execute();
 
 if(list.get(position)=="Choose data centre")
 {
@@ -438,6 +442,10 @@ if(list.get(position)=="Choose data centre")
         @Override
         protected void onPreExecute() {
             Device_id.clear();
+            Device_name.clear();
+            Device_name.add("Choose Device");
+            Device_id.add("0");
+
         }
 
         @Override
@@ -468,6 +476,7 @@ if(list.get(position)=="Choose data centre")
                     for (int i = 0; i < s.getPropertyCount(); i++) {
                         SoapObject temp = (SoapObject) s.getProperty(i);
                         Device_id.add(temp.getProperty(1).toString());
+                        Device_name.add(temp.getProperty(2).toString());
                         Device_adapter.notifyDataSetChanged();
 
 
@@ -484,6 +493,7 @@ if(list.get(position)=="Choose data centre")
                 e.printStackTrace();
               //  Device_id=new ArrayList<String>();
                 Device_id.add("No Devices");
+                Device_name.add("No Device");
                 b.setEnabled(false);
                 Device_adapter.notifyDataSetChanged();
             }
@@ -506,6 +516,11 @@ if(list.get(position)=="Choose data centre")
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Fetching data......");
+            pDialog.isIndeterminate();
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         @Override
@@ -528,6 +543,7 @@ if(list.get(position)=="Choose data centre")
         @Override
         protected void onPostExecute(SoapObject s) {
             parseobject(s);
+            pDialog.dismiss();
            // s.getPropertyCount();
             //SoapObject a= (SoapObject) s.getProperty(0);
             //Log.d("Value",""+s.getPropertyCount()+""+a.getProperty(0));
@@ -587,12 +603,15 @@ if(list.get(position)=="Choose data centre")
                     tv2.setTextColor(Color.parseColor("#ff0000"));
                 else if (Double.parseDouble(Values.get(2)) < 1000)
                     tv2.setTextColor(Color.parseColor("#FFFFFF"));*/
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
             Sql sql = new Sql();
             insert(Values.get(0),Values.get(1),Values.get(2),Time,branchname);
-            Values= new ArrayList<String>(); }
+            Values= new ArrayList<String>();
+            } catch (Exception e) {
+                e.printStackTrace();
+                pDialog.dismiss();
+            }
+        }
     }
 
     private String getint(String s) {
@@ -623,6 +642,12 @@ if(list.get(position)=="Choose data centre")
                 Toast.makeText(getActivity().getApplicationContext(),"Token Expired Login Again",Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getActivity(),Login.class));
             }
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            writetofile(e.toString());
+            Toast.makeText(getActivity().getApplicationContext(),"No Data to Show",Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
         catch (NullPointerException e)
         {

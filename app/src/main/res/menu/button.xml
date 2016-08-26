@@ -9,5 +9,5 @@
     <item android:id="@+id/action_settings"
         android:icon="@mipmap/ic_launcher"
         android:title="@string/action_settings"
-        app:showAsAction="never"/>
+        app:showAsAction="collapseActionView"/>
 </menu>

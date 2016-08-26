@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -21,14 +22,19 @@ public class FireBaseMessagingService extends FirebaseMessagingService {
     }
 
     private void shownotification(String data) {
-        Intent i = new Intent(this,Login.class);
+       Intent i = new Intent(this,Login.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+i.putExtra("com.example.jnetbackup.swipe.message",data);
+     //   Toast.makeText(getApplicationContext(),data,Toast.LENGTH_LONG).show();
+       // Intent i = new Intent();
+      //  i.setClassName(this, BReceiver.class.getName());
+      //  i.setAction("Test");
+      //  i.putExtra("message",data);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("FCM Test")
+                .setContentTitle("Alert")
                 .setContentText(data)
                 .setSmallIcon(R.drawable.warning)
                 .setContentIntent(pendingIntent);

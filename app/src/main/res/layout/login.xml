@@ -16,8 +16,8 @@
         android:id="@+id/editText"
         android:hint="Enter Username"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="15dp"
+        android:textColorHint="#808080"
+        android:textSize="20dp"
 
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
@@ -30,8 +30,8 @@
         android:inputType="textPassword"
         android:hint="Enter Password"
         android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textSize="15dp"
+        android:textColorHint="#808080"
+        android:textSize="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />/>
     <CheckBox
@@ -64,7 +64,6 @@
         android:background="@color/colorWhite"
         android:layout_marginTop="15dp"
         android:scaleType="centerInside" />
-
 
 
 </LinearLayout>

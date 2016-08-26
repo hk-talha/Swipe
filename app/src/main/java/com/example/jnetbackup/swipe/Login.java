@@ -3,6 +3,7 @@ package com.example.jnetbackup.swipe;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,6 +69,9 @@ public class Login extends AppCompatActivity {
     String token;
     BufferedWriter bufferedWriter;
     String Username,Password;
+    Button b;
+ ProgressDialog pDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,15 @@ public class Login extends AppCompatActivity {
             bufferedWriter = new BufferedWriter(new FileWriter(new
                     File(getFilesDir()+ File.separator+"MyFile.txt")));
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (getIntent().getExtras().getString("com.example.jnetbackup.swipe.message").length() != 0) {
+                Toast.makeText(getApplicationContext(), getIntent().getExtras().getString("com.example.jnetbackup.swipe.message"), Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (NullPointerException e)
+        {
             e.printStackTrace();
         }
         if(SaveSharedPreference.getUserName(Login.this).length()!=0)
@@ -90,7 +103,7 @@ public class Login extends AppCompatActivity {
         et = (EditText) findViewById(R.id.editText);
         et1 = (EditText) findViewById(R.id.editText2);
         CheckBox cb  = (CheckBox) findViewById(R.id.checkBox);
-        final Button b= (Button) findViewById(R.id.button2);
+        b= (Button) findViewById(R.id.button2);
       //  authentication();
         Branch_name=new ArrayList<String>();
         Branch_id=new ArrayList<String>();
@@ -166,6 +179,12 @@ Aync_login soap=new Aync_login();
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+          //  b.setEnabled(false);
+            pDialog = new ProgressDialog(Login.this);
+            pDialog.setMessage("Please Wait ...");
+            pDialog.isIndeterminate();
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
         @Override
@@ -186,11 +205,15 @@ Aync_login soap=new Aync_login();
                     Global.Counter1.set(0);
                     Global.Counter2.set(0);
                 } else {
+               //     b.setEnabled(true);
+                    pDialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Invalid Username or Password", Toast.LENGTH_LONG).show();
                 }
             }
             catch (NullPointerException e)
             {
+                pDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Network Connectivity Issue",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }
@@ -271,7 +294,9 @@ int count=0;
             }
         }
         catch (Exception e)
-        {
+        {pDialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Network Connectivity Issue",Toast.LENGTH_LONG).show();
+           // b.setEnabled(true);
             Log.d("Exception",e.toString());
         }
 Intent i =new Intent(getBaseContext(),MainActivity.class);
@@ -366,10 +391,10 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
     }
     public class WebServic {
         //Namespace of the Webservice - It is http://tempuri.org for .NET webservice
-        private final static String NAMESPACE = "https://jms.hopto.org:807";
+        private final static String NAMESPACE = "http://jms.hopto.org:806";
         private final static String URL = "https://jms.hopto.org:805/JMS_Auth_WebService.asmx";
-        private final static String SOAP_ACTION = "https://jms.hopto.org:807/AuthenticateUser";
-        private final static String SOAP_ACTION1 =     "https://jms.hopto.org:807/SaveTokenAndGetBranches";
+        private final static String SOAP_ACTION = "http://jms.hopto.org:806/AuthenticateUser";
+        private final static String SOAP_ACTION1 =     "http://jms.hopto.org:806/SaveTokenAndGetBranches";
         private final static String METHOD_NAME = "SaveTokenAndGetBranches";
         private final static String METHOD_NAME1 = "AuthenticateUser";
 
@@ -416,6 +441,8 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
             } catch (Exception e) {
                 //Print error
                 e.printStackTrace();
+                pDialog.dismiss();
+             //   Toast.makeText(getApplicationContext(),"Network Connectivity Issue",Toast.LENGTH_LONG).show();
                 writetofile(e.toString());
                 //Assign error message to resTxt
                // resTxt = "Error occured";
@@ -466,7 +493,9 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
 
             } catch (Exception e) {
                 //Print error
+                pDialog.dismiss();
                 writetofile(e.toString());
+             //   Toast.makeText(getApplicationContext(),"Network Connectivity Issue",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
                 //Assign error message to resTxt
                 // resTxt = "Error occured";
