@@ -392,7 +392,8 @@ Intent i =new Intent(getBaseContext(),MainActivity.class);
     public class WebServic {
         //Namespace of the Webservice - It is http://tempuri.org for .NET webservice
         private final static String NAMESPACE = "http://jms.hopto.org:806";
-        private final static String URL = "https://jms.hopto.org:805/JMS_Auth_WebService.asmx";
+      //  private final static String URL = "https://jms.hopto.org:805/JMS_Auth_WebService.asmx";
+        private final static String URL =  "https://59.103.165.45:3393/JMS_Auth_WebService.asmx";
         private final static String SOAP_ACTION = "http://jms.hopto.org:806/AuthenticateUser";
         private final static String SOAP_ACTION1 =     "http://jms.hopto.org:806/SaveTokenAndGetBranches";
         private final static String METHOD_NAME = "SaveTokenAndGetBranches";

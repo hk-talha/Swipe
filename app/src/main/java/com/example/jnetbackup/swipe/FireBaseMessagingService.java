@@ -36,7 +36,7 @@ i.putExtra("com.example.jnetbackup.swipe.message",data);
                 .setAutoCancel(true)
                 .setContentTitle("Alert")
                 .setContentText(data)
-                .setSmallIcon(R.drawable.warning)
+                .setSmallIcon(R.drawable.j)
                 .setContentIntent(pendingIntent);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

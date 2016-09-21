@@ -445,6 +445,11 @@ if(list.get(position)=="Choose data centre")
             Device_name.clear();
             Device_name.add("Choose Device");
             Device_id.add("0");
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Fetching Device List......");
+            pDialog.isIndeterminate();
+            pDialog.setCancelable(false);
+            pDialog.show();
 
         }
 
@@ -467,6 +472,7 @@ if(list.get(position)=="Choose data centre")
 
         @Override
         protected void onPostExecute(SoapObject s) {
+            pDialog.dismiss();
             try {
                 b.setEnabled(true);
                 SoapObject o = (SoapObject) s.getProperty(0);

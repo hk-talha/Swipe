@@ -1,55 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1"
-    android:background="@color/colorPrimary"
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="3dp"
+    android:layout_weight=".28"
+    android:background="@drawable/spinner_border"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    >
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:spinnerMode="dropdown" />
+
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:id="@+id/imageView4"
-        android:src="@mipmap/jbslogo"
-        android:paddingTop="15dp"
-        android:background="@color/colorPrimary"/>
-    <EditText
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:hint="Enter Username"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite" />
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:src="@android:drawable/btn_dropdown" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/editText2"
-        android:inputType="textPassword"
-        android:hint="Enter Password"
-        android:textColor="@color/colorWhite"
-        android:textColorHint="@color/colorWhite"/>/>
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Password"
-        android:textColor="@color/colorWhite"
-        android:id="@+id/checkBox"
-        android:checked="false" />
-    <Button
-
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-
-        android:id="@+id/button2"
-        android:textColor="#ffffff"
-        android:layout_gravity="center_horizontal"
-        android:background="@color/dark_primary_color"
-        android:layout_marginTop="15dp" />
-
-
-
-
-</LinearLayout>
+</RelativeLayout>
