@@ -74,7 +74,7 @@ TabAdapter.putExtra(b.getStringArrayList("Branch_id"),b.getStringArrayList("Bran
 
         actionBar = getSupportActionBar();
         //Enable Tabs on Action Bar
-        actionBar.setNavigationMode(actionBar.NAVIGATION_MODE_TABS);
+    //    actionBar.setNavigationMode(actionBar.NAVIGATION_MODE_TABS);
 
         ActionBar.TabListener tabListener = new ActionBar.TabListener() {
 
@@ -128,6 +128,10 @@ actionBar.addTab(actionBar.newTab().setTabListener(tabListener));
             SaveSharedPreference.clearUserName(MainActivity.this);
             startActivity(new Intent(getApplicationContext(),Login.class));
             finish();
+        }
+        else if(item.getItemId()==R.id.notification)
+        {
+            startActivity(new Intent(getApplicationContext(),Notification_Show.class));
         }
 //        switch (item.getItemId())
 //        {

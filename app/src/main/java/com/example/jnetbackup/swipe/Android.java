@@ -153,7 +153,7 @@ public static String ip1;
         {
             e.printStackTrace();
         }
-
+//Device Spinner
             spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -165,6 +165,7 @@ public static String ip1;
                 {
                     Log.d("device_id",""+Device_id.get(position));
                 deviceId = Long.parseLong(Device_id.get(position));
+                    b.performClick();
             b.setEnabled(true);
                 }}
             @Override
@@ -178,6 +179,8 @@ public static String ip1;
 // Apply the adapter to the spinner
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
        spinner.setAdapter(adapter);
+
+        //Branch Spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -218,6 +221,8 @@ if(list.get(position)=="Choose data centre")
        // tv1.setTypeface(myTypeface);
         //tv2 = (TextView) androi.findViewById(R.id.textView3);
        // tv2.setTypeface(myTypeface);
+
+        //Fetch Button
         this.b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -384,6 +389,8 @@ if(list.get(position)=="Choose data centre")
             // progress. For example updating ProgessDialog
         }
     }
+
+    //insert device values into sql lite db
     void insert(String Temp,String Smoke,String Humidity,String time,String branchname)
     {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -436,6 +443,8 @@ if(list.get(position)=="Choose data centre")
             }
         }
     }
+
+    // Fetch Device List From the Server
     class Async_Ksoap extends AsyncTask<String, String, SoapObject> {
         SoapObject result;
 
@@ -505,6 +514,7 @@ if(list.get(position)=="Choose data centre")
             }
         }
     }
+    //Get Token From Firebase Cloud
     private String gettoken() {
         final String[] token = new String[1];
 
@@ -514,7 +524,7 @@ if(list.get(position)=="Choose data centre")
 
         return token[0];
     }
-
+// Fetch Device Infromation From the Server
     class Async_Ksoap_Device extends AsyncTask<String, String, SoapObject>
     {
         SoapObject result;
@@ -619,7 +629,7 @@ if(list.get(position)=="Choose data centre")
             }
         }
     }
-
+// Convert a double into int
     private String getint(String s) {
         StringTokenizer tokens = new StringTokenizer(s, ".");
         String first = tokens.nextToken();// this will contain "Fruit"
@@ -627,7 +637,7 @@ if(list.get(position)=="Choose data centre")
         Log.d("first",first);
         return first;
     }
-
+// Parse a Soap Object
     private void parseobject(SoapObject s) {
         try {
             SoapObject o= (SoapObject) s.getProperty(0);
@@ -661,6 +671,7 @@ if(list.get(position)=="Choose data centre")
             e.printStackTrace();
         }
     }
+    // Date and time when a data is fetched from server
     private String getDateTime() {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());

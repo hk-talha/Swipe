@@ -1,29 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginRight="3dp"
-    android:layout_weight=".28"
-    android:background="@drawable/spinner_border"
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.haseeb.circleprogressbar.MainActivity"
+    android:background="@color/gray">
 
-    <Spinner
-        android:id="@+id/spinner2"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:id="@+id/l1"
+        android:layout_height="wrap_content"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:gravity="center"
+        android:background="@color/gray">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Smoke"
+            android:id="@+id/textView6"
+            android:layout_alignTop="@+id/textView8"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Humidity"
+            android:id="@+id/textView7"
+            android:layout_alignTop="@+id/textView6"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Temperature"
+            android:id="@+id/textView8"
+            android:layout_above="@+id/donut_progress1"
+            android:layout_alignRight="@+id/donut_progress1"
+            android:layout_alignEnd="@+id/donut_progress1"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/l2"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/l1"
+        android:gravity="center"
+        android:background="@color/gray"
+        >
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:id="@+id/donut_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:donut_suffix_text="PPM"
+
+            custom:donut_inner_bottom_text_color="@color/black"
+            custom:donut_text_color="@color/black"
+            custom:donut_finished_color="@color/green_st"
+            custom:donut_unfinished_color="@color/colorPrimary"
+
+            />
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:id="@+id/donut_progress1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            custom:donut_suffix_text="%"
+            custom:donut_text_color="@color/black"
+
+            custom:donut_finished_color="@color/green_st"
+            custom:donut_unfinished_color="@color/colorPrimary"
+
+            />
+
+        <com.github.lzyzsd.circleprogress.DonutProgress
+            android:id="@+id/donut_progress2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            custom:donut_suffix_text="C"
+            custom:donut_text_color="@color/black"
+            custom:donut_finished_color="@color/green_st"
+            custom:donut_unfinished_color="@color/colorPrimary"
+
+
+            android:layout_weight="0" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:gravity="center"
-        android:layout_marginLeft="5dp"
-        android:spinnerMode="dropdown" />
+        android:layout_below="@+id/l2"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="@color/colorWhite"
+        >
 
-    <ImageView
-        android:layout_width="wrap_content"
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:paddingTop="20dp"
+            android:layout_below="@+id/spinner2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner2"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/spinner"
+            android:layout_alignStart="@+id/spinner" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Fetch Latest Readings"
+        android:id="@+id/button"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:src="@android:drawable/btn_dropdown" />
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
